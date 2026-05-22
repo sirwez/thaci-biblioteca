@@ -134,7 +134,7 @@
         gap: 1rem;
       }
       .books-list .book-quote {
-        margin-top: .75rem;
+        margin-top: 0.75rem;
       }
     </style>
   </head>
@@ -163,7 +163,6 @@
           </div>
 
           <div class="flex items-center gap-2">
-
             <button
               id="openAuthBtn"
               class="rounded-full bg-wine px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-wine/20 transition hover:bg-rose"
@@ -220,17 +219,38 @@
               <div class="grid gap-3 text-center">
                 <div class="grid grid-cols-2 gap-3">
                   <div class="rounded-2xl bg-white/55 p-4">
-                    <p id="totalBooks" class="stat-value font-serif font-bold text-wine">0</p>
-                    <p class="text-xs uppercase tracking-[0.2em] text-ink/50">livros</p>
+                    <p
+                      id="totalBooks"
+                      class="stat-value font-serif font-bold text-wine"
+                    >
+                      0
+                    </p>
+                    <p class="text-xs uppercase tracking-[0.2em] text-ink/50">
+                      livros
+                    </p>
                   </div>
                   <div class="rounded-2xl bg-white/55 p-4">
-                    <p id="readBooks" class="stat-value font-serif font-bold text-moss">0</p>
-                    <p class="text-xs uppercase tracking-[0.2em] text-ink/50">lidos</p>
+                    <p
+                      id="readBooks"
+                      class="stat-value font-serif font-bold text-moss"
+                    >
+                      0
+                    </p>
+                    <p class="text-xs uppercase tracking-[0.2em] text-ink/50">
+                      lidos
+                    </p>
                   </div>
                 </div>
                 <div class="rounded-2xl bg-white/55 p-4">
-                  <p id="totalValue" class="acervo-value font-serif font-bold text-ink">R$0</p>
-                  <p class="text-xs uppercase tracking-[0.2em] text-ink/50">acervo</p>
+                  <p
+                    id="totalValue"
+                    class="acervo-value font-serif font-bold text-ink"
+                  >
+                    R$0
+                  </p>
+                  <p class="text-xs uppercase tracking-[0.2em] text-ink/50">
+                    acervo
+                  </p>
                 </div>
               </div>
               <p
@@ -286,44 +306,113 @@
 
           <div class="flex flex-wrap items-center gap-2 lg:justify-end">
             <div class="flex rounded-2xl border border-wine/15 bg-white/40 p-1">
-              <button id="galleryViewBtn" class="view-button active rounded-xl px-3 py-2 text-xs font-bold text-wine transition">Galeria</button>
-              <button id="listViewBtn" class="view-button rounded-xl px-3 py-2 text-xs font-bold text-wine transition">Lista</button>
+              <button
+                id="galleryViewBtn"
+                class="view-button active rounded-xl px-3 py-2 text-xs font-bold text-wine transition"
+              >
+                Galeria
+              </button>
+              <button
+                id="listViewBtn"
+                class="view-button rounded-xl px-3 py-2 text-xs font-bold text-wine transition"
+              >
+                Lista
+              </button>
             </div>
-            <div id="adminActions" class="hidden flex flex-wrap gap-2 lg:justify-end">
-              <button id="openImportBtn" class="rounded-2xl border border-wine/20 bg-white/50 px-4 py-3 text-sm font-semibold text-wine transition hover:bg-white">Importar JSON</button>
-              <button id="openBookBtn" class="rounded-2xl bg-wine px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-wine/20 transition hover:bg-rose">+ Novo livro</button>
+            <div
+              id="adminActions"
+              class="hidden flex flex-wrap gap-2 lg:justify-end"
+            >
+              <button
+                id="openImportBtn"
+                class="rounded-2xl border border-wine/20 bg-white/50 px-4 py-3 text-sm font-semibold text-wine transition hover:bg-white"
+              >
+                Importar JSON
+              </button>
+              <button
+                id="openBookBtn"
+                class="rounded-2xl bg-wine px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-wine/20 transition hover:bg-rose"
+              >
+                + Novo livro
+              </button>
             </div>
           </div>
         </section>
 
-        <section class="mt-8 rounded-[2rem] border border-wine/10 bg-white/30 p-5 shadow-sm">
+        <section
+          class="mt-8 rounded-[2rem] border border-wine/10 bg-white/30 p-5 shadow-sm"
+        >
           <div class="mb-4 flex items-center justify-between gap-3">
             <div>
-              <p class="text-xs uppercase tracking-[0.3em] text-wine/70">Resumo da estante</p>
-              <h3 class="font-serif text-3xl font-bold text-ink">Painel da biblioteca</h3>
+              <p class="text-xs uppercase tracking-[0.3em] text-wine/70">
+                Resumo da estante
+              </p>
+              <h3 class="font-serif text-3xl font-bold text-ink">
+                Painel da biblioteca
+              </h3>
             </div>
-            <p id="readPercentText" class="rounded-full bg-wine/10 px-4 py-2 text-sm font-bold text-wine">0% lido</p>
+            <p
+              id="readPercentText"
+              class="rounded-full bg-wine/10 px-4 py-2 text-sm font-bold text-wine"
+            >
+              0% lido
+            </p>
           </div>
           <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             <div class="rounded-2xl bg-white/55 p-4">
-              <p id="unreadBooks" class="font-serif text-3xl font-bold text-wine">0</p>
-              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">não lidos</p>
+              <p
+                id="unreadBooks"
+                class="font-serif text-3xl font-bold text-wine"
+              >
+                0
+              </p>
+              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">
+                não lidos
+              </p>
             </div>
             <div class="rounded-2xl bg-white/55 p-4">
-              <p id="averagePrice" class="font-serif text-3xl font-bold text-ink">R$0</p>
-              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">preço médio</p>
+              <p
+                id="averagePrice"
+                class="font-serif text-3xl font-bold text-ink"
+              >
+                R$0
+              </p>
+              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">
+                preço médio
+              </p>
             </div>
             <div class="rounded-2xl bg-white/55 p-4">
-              <p id="averageRating" class="font-serif text-3xl font-bold text-moss">-</p>
-              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">nota média</p>
+              <p
+                id="averageRating"
+                class="font-serif text-3xl font-bold text-moss"
+              >
+                -
+              </p>
+              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">
+                nota média
+              </p>
             </div>
             <div class="rounded-2xl bg-white/55 p-4">
-              <p id="topPublisher" class="truncate font-serif text-2xl font-bold text-ink">-</p>
-              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">editora top</p>
+              <p
+                id="topPublisher"
+                class="truncate font-serif text-2xl font-bold text-ink"
+              >
+                -
+              </p>
+              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">
+                editora top
+              </p>
             </div>
             <div class="rounded-2xl bg-white/55 p-4">
-              <p id="topAuthor" class="truncate font-serif text-2xl font-bold text-ink">-</p>
-              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">autor top</p>
+              <p
+                id="topAuthor"
+                class="truncate font-serif text-2xl font-bold text-ink"
+              >
+                -
+              </p>
+              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">
+                autor top
+              </p>
             </div>
           </div>
         </section>
@@ -355,9 +444,17 @@
             </p>
           </div>
 
-          <div id="booksGrid" class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3"></div>
+          <div
+            id="booksGrid"
+            class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3"
+          ></div>
           <div class="mt-8 flex justify-center">
-            <button id="loadMoreBtn" class="hidden rounded-2xl border border-wine/20 bg-white/50 px-6 py-3 text-sm font-bold text-wine shadow-sm transition hover:bg-white">Carregar mais livros</button>
+            <button
+              id="loadMoreBtn"
+              class="hidden rounded-2xl border border-wine/20 bg-white/50 px-6 py-3 text-sm font-bold text-wine shadow-sm transition hover:bg-white"
+            >
+              Carregar mais livros
+            </button>
           </div>
         </section>
       </main>
@@ -443,7 +540,9 @@
         id="bookModalPanel"
         class="flex w-full max-w-2xl flex-col overflow-hidden rounded-[2rem] border border-wine/15 bg-parchment shadow-2xl"
       >
-        <div class="shrink-0 rounded-t-[2rem] border-b border-wine/10 bg-parchment p-5 sm:p-6">
+        <div
+          class="shrink-0 rounded-t-[2rem] border-b border-wine/10 bg-parchment p-5 sm:p-6"
+        >
           <div class="flex items-start justify-between gap-4">
             <div>
               <p class="text-xs uppercase tracking-[0.3em] text-wine/70">
@@ -465,123 +564,153 @@
           </div>
         </div>
 
-        <div id="bookModalBody" class="min-h-0 flex-1 overflow-y-auto p-5 sm:p-6">
-        <form id="bookForm" class="grid gap-4 md:grid-cols-2">
-          <input id="bookOriginalId" type="hidden" />
-          <div>
-            <label class="text-sm font-semibold text-ink/75">ISBN-13</label>
-            <div class="mt-2 flex gap-2">
+        <div
+          id="bookModalBody"
+          class="min-h-0 flex-1 overflow-y-auto p-5 sm:p-6"
+        >
+          <form id="bookForm" class="grid gap-4 md:grid-cols-2">
+            <input id="bookOriginalId" type="hidden" />
+            <div>
+              <label class="text-sm font-semibold text-ink/75">ISBN-13</label>
+              <div class="mt-2 flex gap-2">
+                <input
+                  id="bookIsbn"
+                  class="w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+                  placeholder="9780000000000"
+                />
+                <button
+                  id="fetchIsbnBtn"
+                  type="button"
+                  class="shrink-0 rounded-2xl border border-wine/20 bg-white/50 px-4 py-3 text-xs font-bold text-wine hover:bg-white"
+                >
+                  Buscar
+                </button>
+              </div>
+              <p class="mt-1 text-xs text-ink/45">
+                Busca título, autor, editora e capa automaticamente.
+              </p>
+            </div>
+            <div>
+              <label class="text-sm font-semibold text-ink/75">Preço</label>
               <input
-                id="bookIsbn"
-                class="w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
-                placeholder="9780000000000"
+                id="bookPrice"
+                type="number"
+                step="0.01"
+                min="0"
+                required
+                class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+                placeholder="79.90"
               />
-              <button
-                id="fetchIsbnBtn"
-                type="button"
-                class="shrink-0 rounded-2xl border border-wine/20 bg-white/50 px-4 py-3 text-xs font-bold text-wine hover:bg-white"
+            </div>
+            <div class="md:col-span-2">
+              <label class="text-sm font-semibold text-ink/75">Livro</label>
+              <input
+                id="bookName"
+                required
+                class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+                placeholder="O Amante de Lady Chartelley"
+              />
+            </div>
+            <div>
+              <label class="text-sm font-semibold text-ink/75">Editora</label>
+              <input
+                id="bookPublisher"
+                class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+                placeholder="Antofagica"
+              />
+            </div>
+            <div>
+              <label class="text-sm font-semibold text-ink/75">Autor</label>
+              <input
+                id="bookAuthor"
+                class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+                placeholder="D. H. Lawrence"
+              />
+            </div>
+            <div class="md:col-span-2">
+              <label class="text-sm font-semibold text-ink/75"
+                >URL da capa</label
               >
-                Buscar
+              <input
+                id="bookCover"
+                class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+                placeholder="https://..."
+              />
+              <p class="mt-1 text-xs text-ink/45">
+                Pode ser preenchida automaticamente pelo ISBN ou escolhida
+                manualmente.
+              </p>
+            </div>
+            <label
+              class="md:col-span-2 flex cursor-pointer items-center justify-between rounded-2xl border border-wine/10 bg-white/50 px-4 py-3"
+            >
+              <span>
+                <strong class="block text-sm text-ink"
+                  >Livro já foi lido?</strong
+                >
+                <small class="text-ink/55"
+                  >Marque para aparecer como concluído.</small
+                >
+              </span>
+              <input
+                id="bookRead"
+                type="checkbox"
+                class="h-5 w-5 accent-wine"
+              />
+            </label>
+            <div>
+              <label class="text-sm font-semibold text-ink/75"
+                >Nota pessoal</label
+              >
+              <select
+                id="bookRating"
+                class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+              >
+                <option value="">Sem nota</option>
+                <option value="5">★★★★★ - Favorito</option>
+                <option value="4">★★★★ - Muito bom</option>
+                <option value="3">★★★ - Bom</option>
+                <option value="2">★★ - Regular</option>
+                <option value="1">★ - Não gostei</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-sm font-semibold text-ink/75"
+                >Frase favorita</label
+              >
+              <input
+                id="bookFavoriteQuote"
+                class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+                placeholder="Uma frase marcante do livro..."
+              />
+            </div>
+            <div class="md:col-span-2">
+              <label class="text-sm font-semibold text-ink/75"
+                >Resenha pessoal</label
+              >
+              <textarea
+                id="bookReview"
+                class="mt-2 h-28 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+                placeholder="O que você achou da leitura?"
+              ></textarea>
+            </div>
+            <div
+              class="sticky bottom-0 -mx-6 mt-2 flex flex-wrap justify-end gap-3 border-t border-wine/10 bg-parchment/95 px-6 py-4 backdrop-blur md:col-span-2"
+            >
+              <button
+                type="button"
+                data-close="bookModal"
+                class="rounded-2xl border border-wine/20 bg-white/50 px-5 py-3 text-sm font-semibold text-wine hover:bg-white"
+              >
+                Cancelar
+              </button>
+              <button
+                class="rounded-2xl bg-wine px-5 py-3 text-sm font-semibold text-white hover:bg-rose"
+              >
+                Salvar livro
               </button>
             </div>
-            <p class="mt-1 text-xs text-ink/45">
-              Busca título, autor, editora e capa automaticamente.
-            </p>
-          </div>
-          <div>
-            <label class="text-sm font-semibold text-ink/75">Preço</label>
-            <input
-              id="bookPrice"
-              type="number"
-              step="0.01"
-              min="0"
-              required
-              class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
-              placeholder="79.90"
-            />
-          </div>
-          <div class="md:col-span-2">
-            <label class="text-sm font-semibold text-ink/75">Livro</label>
-            <input
-              id="bookName"
-              required
-              class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
-              placeholder="O Amante de Lady Chartelley"
-            />
-          </div>
-          <div>
-            <label class="text-sm font-semibold text-ink/75">Editora</label>
-            <input
-              id="bookPublisher"
-              class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
-              placeholder="Antofagica"
-            />
-          </div>
-          <div>
-            <label class="text-sm font-semibold text-ink/75">Autor</label>
-            <input
-              id="bookAuthor"
-              class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
-              placeholder="D. H. Lawrence"
-            />
-          </div>
-          <div class="md:col-span-2">
-            <label class="text-sm font-semibold text-ink/75">URL da capa</label>
-            <input
-              id="bookCover"
-              class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
-              placeholder="https://..."
-            />
-            <p class="mt-1 text-xs text-ink/45">
-              Pode ser preenchida automaticamente pelo ISBN ou escolhida
-              manualmente.
-            </p>
-          </div>
-          <label
-            class="md:col-span-2 flex cursor-pointer items-center justify-between rounded-2xl border border-wine/10 bg-white/50 px-4 py-3"
-          >
-            <span>
-              <strong class="block text-sm text-ink">Livro já foi lido?</strong>
-              <small class="text-ink/55"
-                >Marque para aparecer como concluído.</small
-              >
-            </span>
-            <input id="bookRead" type="checkbox" class="h-5 w-5 accent-wine" />
-          </label>
-          <div>
-            <label class="text-sm font-semibold text-ink/75">Nota pessoal</label>
-            <select id="bookRating" class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4">
-              <option value="">Sem nota</option>
-              <option value="5">★★★★★ - Favorito</option>
-              <option value="4">★★★★ - Muito bom</option>
-              <option value="3">★★★ - Bom</option>
-              <option value="2">★★ - Regular</option>
-              <option value="1">★ - Não gostei</option>
-            </select>
-          </div>
-          <div>
-            <label class="text-sm font-semibold text-ink/75">Frase favorita</label>
-            <input id="bookFavoriteQuote" class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4" placeholder="Uma frase marcante do livro..." />
-          </div>
-          <div class="md:col-span-2">
-            <label class="text-sm font-semibold text-ink/75">Resenha pessoal</label>
-            <textarea id="bookReview" class="mt-2 h-28 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4" placeholder="O que você achou da leitura?"></textarea>
-          </div>
-          <div class="sticky bottom-0 -mx-6 mt-2 flex flex-wrap justify-end gap-3 border-t border-wine/10 bg-parchment/95 px-6 py-4 backdrop-blur md:col-span-2">
-            <button
-              type="button"
-              data-close="bookModal"
-              class="rounded-2xl border border-wine/20 bg-white/50 px-5 py-3 text-sm font-semibold text-wine hover:bg-white"
-            >
-              Cancelar
-            </button>
-            <button
-              class="rounded-2xl bg-wine px-5 py-3 text-sm font-semibold text-white hover:bg-rose"
-            >
-              Salvar livro
-            </button>
-          </div>
-        </form>
+          </form>
         </div>
       </div>
     </div>
@@ -613,7 +742,8 @@
         <p class="mt-3 text-sm leading-6 text-ink/65">
           Cole um array de objetos. O id antigo será ignorado; o Supabase gerará
           um id novo automaticamente. Campos aceitos: preco, livro, editora,
-          autor, lido, isbn_13, capa_url, nota, resenha_pessoal e frase_favorita.
+          autor, lido, isbn_13, capa_url, nota, resenha_pessoal e
+          frase_favorita.
         </p>
         <textarea
           id="jsonInput"
@@ -647,6 +777,14 @@
       const supabaseClient = supabase.createClient(
         SUPABASE_URL,
         SUPABASE_ANON_KEY,
+        {
+          auth: {
+            persistSession: true,
+            storage: window.localStorage,
+            autoRefreshToken: true,
+            detectSessionInUrl: false,
+          },
+        },
       );
 
       const state = {
@@ -702,10 +840,12 @@
         modal.classList.add("hidden");
         modal.classList.remove("flex");
 
-        const hasOpenModal = ["authModal", "bookModal", "importModal"].some((modalId) => {
-          const item = el(modalId);
-          return item && !item.classList.contains("hidden");
-        });
+        const hasOpenModal = ["authModal", "bookModal", "importModal"].some(
+          (modalId) => {
+            const item = el(modalId);
+            return item && !item.classList.contains("hidden");
+          },
+        );
 
         if (!hasOpenModal) {
           document.body.classList.remove("overflow-hidden");
@@ -785,7 +925,9 @@
         el("searchInput").addEventListener("input", applyFilters);
         el("readFilter").addEventListener("change", applyFilters);
         el("sortFilter").addEventListener("change", applyFilters);
-        el("galleryViewBtn").addEventListener("click", () => setViewMode("gallery"));
+        el("galleryViewBtn").addEventListener("click", () =>
+          setViewMode("gallery"),
+        );
         el("listViewBtn").addEventListener("click", () => setViewMode("list"));
         el("loadMoreBtn").addEventListener("click", loadMoreBooks);
         el("authForm").addEventListener("submit", authSubmit);
@@ -858,7 +1000,10 @@
           "mt-4 rounded-2xl bg-moss/10 px-4 py-3 text-sm text-moss";
 
         if (mode === "login") {
-          state.session = response.data?.session || (await supabaseClient.auth.getSession()).data?.session || null;
+          state.session =
+            response.data?.session ||
+            (await supabaseClient.auth.getSession()).data?.session ||
+            null;
           updateAuthUI();
           closeModal("authModal");
           toast("Bem-vinda à biblioteca.");
@@ -891,7 +1036,16 @@
           // que adiciona isbn_13 e capa_url.
           if (
             response.error &&
-            ["isbn_13", "capa_url", "nota", "resenha_pessoal", "frase_favorita", "created_at"].some((column) => String(response.error.message || "").includes(column))
+            [
+              "isbn_13",
+              "capa_url",
+              "nota",
+              "resenha_pessoal",
+              "frase_favorita",
+              "created_at",
+            ].some((column) =>
+              String(response.error.message || "").includes(column),
+            )
           ) {
             response = await withTimeout(
               supabaseClient
@@ -957,10 +1111,15 @@
             String(a.autor || "").localeCompare(String(b.autor || "")),
           "editora-asc": (a, b) =>
             String(a.editora || "").localeCompare(String(b.editora || "")),
-          "lidos-first": (a, b) => Number(Boolean(b.lido)) - Number(Boolean(a.lido)),
-          "nao-lidos-first": (a, b) => Number(Boolean(a.lido)) - Number(Boolean(b.lido)),
+          "lidos-first": (a, b) =>
+            Number(Boolean(b.lido)) - Number(Boolean(a.lido)),
+          "nao-lidos-first": (a, b) =>
+            Number(Boolean(a.lido)) - Number(Boolean(b.lido)),
           "nota-desc": (a, b) => Number(b.nota || 0) - Number(a.nota || 0),
-          "recentes": (a, b) => String(b.created_at || "").localeCompare(String(a.created_at || "")),
+          recentes: (a, b) =>
+            String(b.created_at || "").localeCompare(
+              String(a.created_at || ""),
+            ),
         };
 
         books.sort(sorters[sort] || sorters["livro-asc"]);
@@ -970,16 +1129,16 @@
       }
 
       function getMostFrequent(items) {
-        const counts = items
-          .filter(Boolean)
-          .reduce((acc, item) => {
-            const key = String(item).trim();
-            if (!key) return acc;
-            acc[key] = (acc[key] || 0) + 1;
-            return acc;
-          }, {});
+        const counts = items.filter(Boolean).reduce((acc, item) => {
+          const key = String(item).trim();
+          if (!key) return acc;
+          acc[key] = (acc[key] || 0) + 1;
+          return acc;
+        }, {});
 
-        const [name] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0] || ["-"];
+        const [name] = Object.entries(counts).sort(
+          (a, b) => b[1] - a[1],
+        )[0] || ["-"];
         return name;
       }
 
@@ -991,9 +1150,12 @@
           (sum, book) => sum + Number(book.preco || 0),
           0,
         );
-        const ratedBooks = state.books.filter((book) => Number(book.nota || 0) > 0);
+        const ratedBooks = state.books.filter(
+          (book) => Number(book.nota || 0) > 0,
+        );
         const ratingAverage = ratedBooks.length
-          ? ratedBooks.reduce((sum, book) => sum + Number(book.nota || 0), 0) / ratedBooks.length
+          ? ratedBooks.reduce((sum, book) => sum + Number(book.nota || 0), 0) /
+            ratedBooks.length
           : 0;
         const readPercent = total ? Math.round((read / total) * 100) : 0;
 
@@ -1001,10 +1163,18 @@
         el("readBooks").textContent = read;
         el("totalValue").textContent = money(value);
         el("unreadBooks").textContent = unread;
-        el("averagePrice").textContent = total ? money(value / total).replace(",00", "") : "R$0";
-        el("averageRating").textContent = ratedBooks.length ? `${ratingAverage.toFixed(1)} ★` : "-";
-        el("topPublisher").textContent = getMostFrequent(state.books.map((book) => book.editora));
-        el("topAuthor").textContent = getMostFrequent(state.books.map((book) => book.autor));
+        el("averagePrice").textContent = total
+          ? money(value / total).replace(",00", "")
+          : "R$0";
+        el("averageRating").textContent = ratedBooks.length
+          ? `${ratingAverage.toFixed(1)} ★`
+          : "-";
+        el("topPublisher").textContent = getMostFrequent(
+          state.books.map((book) => book.editora),
+        );
+        el("topAuthor").textContent = getMostFrequent(
+          state.books.map((book) => book.autor),
+        );
         el("readPercentText").textContent = `${readPercent}% lido`;
       }
 
@@ -1038,8 +1208,12 @@
         );
 
         const visibleBooks = state.filteredBooks.slice(0, state.visibleCount);
-        el("loadMoreBtn").classList.toggle("hidden", state.filteredBooks.length <= state.visibleCount);
-        el("loadMoreBtn").textContent = `Carregar mais livros (${Math.min(state.visibleCount, state.filteredBooks.length)} de ${state.filteredBooks.length})`;
+        el("loadMoreBtn").classList.toggle(
+          "hidden",
+          state.filteredBooks.length <= state.visibleCount,
+        );
+        el("loadMoreBtn").textContent =
+          `Carregar mais livros (${Math.min(state.visibleCount, state.filteredBooks.length)} de ${state.filteredBooks.length})`;
 
         visibleBooks.forEach((book, index) => {
           const mood = book.lido ? "Lido" : "Na pilha de leitura";
@@ -1206,8 +1380,12 @@
           isbn_13: item.isbn_13 ? normalizeIsbn(item.isbn_13) : null,
           capa_url: item.capa_url ? String(item.capa_url).trim() : null,
           nota: item.nota ? Number(item.nota) : null,
-          frase_favorita: item.frase_favorita ? String(item.frase_favorita).trim() : null,
-          resenha_pessoal: item.resenha_pessoal ? String(item.resenha_pessoal).trim() : null,
+          frase_favorita: item.frase_favorita
+            ? String(item.frase_favorita).trim()
+            : null,
+          resenha_pessoal: item.resenha_pessoal
+            ? String(item.resenha_pessoal).trim()
+            : null,
         };
       }
 
@@ -1313,7 +1491,10 @@
         }
       }
 
-      if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      if (
+        "serviceWorker" in navigator &&
+        location.protocol.startsWith("http")
+      ) {
         window.addEventListener("load", () => {
           navigator.serviceWorker.register("sw.js").catch(() => {});
         });
