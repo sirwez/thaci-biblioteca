@@ -77,6 +77,22 @@
       .modal-backdrop {
         backdrop-filter: blur(8px);
       }
+
+      /* Ajuste real para celulares: 100vh pode considerar a barra do navegador.
+         100dvh usa a área visível atual e evita o modal sair da tela. */
+      #bookModal {
+        height: 100vh;
+        height: 100dvh;
+        max-height: 100dvh;
+        overflow: hidden;
+      }
+      #bookModalPanel {
+        max-height: calc(100vh - 1rem);
+        max-height: calc(100dvh - 1rem);
+      }
+      #bookModalBody {
+        -webkit-overflow-scrolling: touch;
+      }
       .line-clamp-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -421,12 +437,13 @@
     <!-- Modal Livro -->
     <div
       id="bookModal"
-      class="modal-backdrop fixed inset-0 z-50 hidden items-start justify-center overflow-y-auto bg-ink/35 p-4 sm:p-6"
+      class="modal-backdrop fixed inset-0 z-50 hidden items-center justify-center overflow-hidden bg-ink/35 p-2 sm:p-6"
     >
       <div
-        class="my-6 w-full max-w-2xl overflow-hidden rounded-[2rem] border border-wine/15 bg-parchment shadow-2xl"
+        id="bookModalPanel"
+        class="flex w-full max-w-2xl flex-col overflow-hidden rounded-[2rem] border border-wine/15 bg-parchment shadow-2xl"
       >
-        <div class="sticky top-0 z-10 rounded-t-[2rem] border-b border-wine/10 bg-parchment p-6">
+        <div class="shrink-0 rounded-t-[2rem] border-b border-wine/10 bg-parchment p-5 sm:p-6">
           <div class="flex items-start justify-between gap-4">
             <div>
               <p class="text-xs uppercase tracking-[0.3em] text-wine/70">
@@ -448,7 +465,7 @@
           </div>
         </div>
 
-        <div class="max-h-[calc(100vh-11rem)] overflow-y-auto p-6">
+        <div id="bookModalBody" class="min-h-0 flex-1 overflow-y-auto p-5 sm:p-6">
         <form id="bookForm" class="grid gap-4 md:grid-cols-2">
           <input id="bookOriginalId" type="hidden" />
           <div>
@@ -668,6 +685,13 @@
 
         modal.classList.remove("hidden");
         modal.classList.add("flex");
+
+        if (id === "bookModal") {
+          modal.scrollTop = 0;
+          const body = el("bookModalBody");
+          if (body) body.scrollTop = 0;
+        }
+
         document.body.classList.add("overflow-hidden");
       }
 

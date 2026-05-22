@@ -1,4 +1,4 @@
-const CACHE_NAME = 'biblioteca-thaci-v1';
+const CACHE_NAME = 'biblioteca-thaci-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -28,6 +28,21 @@ self.addEventListener('fetch', (event) => {
 
   if (request.method !== 'GET') return;
   if (!request.url.startsWith(self.location.origin)) return;
+
+  // HTML precisa buscar a versão mais nova primeiro.
+  // Isso evita o celular ficar preso em um index.html antigo no GitHub Pages.
+  if (request.mode === 'navigate' || request.destination === 'document') {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          return response;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(request).then((cached) => {
