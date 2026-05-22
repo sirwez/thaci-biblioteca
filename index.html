@@ -1,0 +1,1281 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biblioteca Particular</title>
+    <meta name="theme-color" content="#5a1f2b" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              serif: ["Cormorant Garamond", "Georgia", "serif"],
+              sans: ["Inter", "system-ui", "sans-serif"],
+            },
+            colors: {
+              parchment: "#f7efe1",
+              ink: "#33251d",
+              tea: "#b98d63",
+              rose: "#9f4f5f",
+              wine: "#5a1f2b",
+              fog: "#ede1d0",
+              moss: "#51624a",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(159, 79, 95, 0.18),
+            transparent 32rem
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(81, 98, 74, 0.16),
+            transparent 34rem
+          ),
+          linear-gradient(135deg, #f7efe1 0%, #efe0ca 50%, #f8f1e6 100%);
+        color: #33251d;
+      }
+      .paper {
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.42)),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%238a6a4d' fill-opacity='0.07'%3E%3Cpath d='M0 0h80v1H0zM0 40h80v1H0zM0 79h80v1H0zM0 0h1v80H0zM40 0h1v80h-1zM79 0h1v80h-1z'/%3E%3C/g%3E%3C/svg%3E");
+      }
+      .ornament::before,
+      .ornament::after {
+        content: "";
+        display: inline-block;
+        width: 74px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #9f4f5f, transparent);
+        vertical-align: middle;
+        margin: 0 14px;
+      }
+      .book-card {
+        box-shadow: 0 18px 45px rgba(51, 37, 29, 0.1);
+      }
+      .book-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 24px 58px rgba(51, 37, 29, 0.16);
+      }
+      .modal-backdrop {
+        backdrop-filter: blur(8px);
+      }
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .stat-value {
+        font-size: clamp(1.75rem, 3vw, 2.5rem);
+        line-height: 1;
+        white-space: nowrap;
+      }
+      .book-cover {
+        aspect-ratio: 2 / 3;
+        object-fit: cover;
+      }
+      .acervo-value {
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .view-button.active {
+        background: #5a1f2b;
+        color: #fff;
+        border-color: #5a1f2b;
+      }
+      .books-list {
+        display: grid;
+        grid-template-columns: 1fr !important;
+      }
+      .books-list .book-card {
+        padding: 1rem;
+      }
+      .books-list .book-card-body {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 1rem;
+      }
+      .books-list .book-quote {
+        margin-top: .75rem;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen font-sans selection:bg-wine selection:text-white">
+    <div class="min-h-screen paper">
+      <header
+        class="sticky top-0 z-30 border-b border-wine/10 bg-parchment/80 backdrop-blur-xl"
+      >
+        <div
+          class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="grid h-11 w-11 place-items-center rounded-full border border-wine/20 bg-white/50 shadow-sm"
+            >
+              <span class="font-serif text-2xl text-wine">A</span>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-[0.35em] text-wine/70">
+                Biblioteca
+              </p>
+              <h1 class="font-serif text-2xl font-bold leading-6 text-ink">
+                Thaci
+              </h1>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+
+            <button
+              id="openAuthBtn"
+              class="rounded-full bg-wine px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-wine/20 transition hover:bg-rose"
+            >
+              Entrar
+            </button>
+            <button
+              id="logoutBtn"
+              class="hidden rounded-full border border-wine/20 bg-white/40 px-4 py-2 text-sm font-semibold text-wine transition hover:bg-white"
+            >
+              Sair
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <section
+          class="relative overflow-hidden rounded-[2rem] border border-wine/10 bg-white/35 p-6 shadow-2xl shadow-wine/5 md:p-10"
+        >
+          <div
+            class="absolute -right-24 -top-24 h-64 w-64 rounded-full bg-rose/10 blur-3xl"
+          ></div>
+          <div
+            class="absolute -bottom-28 -left-24 h-72 w-72 rounded-full bg-moss/10 blur-3xl"
+          ></div>
+
+          <div
+            class="relative grid gap-8 lg:grid-cols-[1.15fr_.85fr] lg:items-end"
+          >
+            <div>
+              <p
+                class="ornament mb-4 text-center font-serif text-sm italic text-wine/80 md:text-left"
+              >
+                terror, romance & cartas não enviadas
+              </p>
+              <h2
+                class="max-w-3xl font-serif text-5xl font-bold leading-[.95] text-ink md:text-7xl"
+              >
+                Sempre imaginei que o paraíso fosse uma espécie de biblioteca
+              </h2>
+              <p
+                class="mt-5 max-w-2xl text-base leading-8 text-ink/70 md:text-lg"
+              >
+                Cadastre, organize e edite seus livros em um ambiente vintage,
+                delicado e um pouco misterioso — perfeito para uma leitora que
+                ama Romance e Terror.
+              </p>
+            </div>
+
+            <div
+              class="rounded-[1.5rem] border border-wine/10 bg-parchment/70 p-5 shadow-inner"
+            >
+              <div class="grid gap-3 text-center">
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="rounded-2xl bg-white/55 p-4">
+                    <p id="totalBooks" class="stat-value font-serif font-bold text-wine">0</p>
+                    <p class="text-xs uppercase tracking-[0.2em] text-ink/50">livros</p>
+                  </div>
+                  <div class="rounded-2xl bg-white/55 p-4">
+                    <p id="readBooks" class="stat-value font-serif font-bold text-moss">0</p>
+                    <p class="text-xs uppercase tracking-[0.2em] text-ink/50">lidos</p>
+                  </div>
+                </div>
+                <div class="rounded-2xl bg-white/55 p-4">
+                  <p id="totalValue" class="acervo-value font-serif font-bold text-ink">R$0</p>
+                  <p class="text-xs uppercase tracking-[0.2em] text-ink/50">acervo</p>
+                </div>
+              </div>
+              <p
+                id="authHint"
+                class="mt-4 rounded-2xl border border-wine/10 bg-white/45 px-4 py-3 text-sm leading-6 text-ink/65"
+              >
+                Visitantes podem ver a biblioteca. Para criar, editar, apagar ou
+                importar livros, faça login.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="mt-8 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center"
+        >
+          <div class="grid gap-3 md:grid-cols-[1fr_180px_180px]">
+            <label class="relative block">
+              <span
+                class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-wine/60"
+                >⌕</span
+              >
+              <input
+                id="searchInput"
+                class="w-full rounded-2xl border border-wine/10 bg-white/60 py-3 pl-10 pr-4 text-sm outline-none ring-wine/20 transition placeholder:text-ink/35 focus:ring-4"
+                placeholder="Buscar por livro, autor ou editora..."
+              />
+            </label>
+            <select
+              id="readFilter"
+              class="rounded-2xl border border-wine/10 bg-white/60 px-4 py-3 text-sm outline-none ring-wine/20 focus:ring-4"
+            >
+              <option value="all">Todos</option>
+              <option value="read">Lidos</option>
+              <option value="unread">Não lidos</option>
+            </select>
+            <select
+              id="sortFilter"
+              class="rounded-2xl border border-wine/10 bg-white/60 px-4 py-3 text-sm outline-none ring-wine/20 focus:ring-4"
+            >
+              <option value="livro-asc">Livro A-Z</option>
+              <option value="livro-desc">Livro Z-A</option>
+              <option value="preco-desc">Maior preço</option>
+              <option value="preco-asc">Menor preço</option>
+              <option value="autor-asc">Autor A-Z</option>
+              <option value="editora-asc">Editora A-Z</option>
+              <option value="lidos-first">Lidos primeiro</option>
+              <option value="nao-lidos-first">Não lidos primeiro</option>
+              <option value="nota-desc">Melhor avaliação</option>
+              <option value="recentes">Adicionados recentemente</option>
+            </select>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2 lg:justify-end">
+            <div class="flex rounded-2xl border border-wine/15 bg-white/40 p-1">
+              <button id="galleryViewBtn" class="view-button active rounded-xl px-3 py-2 text-xs font-bold text-wine transition">Galeria</button>
+              <button id="listViewBtn" class="view-button rounded-xl px-3 py-2 text-xs font-bold text-wine transition">Lista</button>
+            </div>
+            <div id="adminActions" class="hidden flex flex-wrap gap-2 lg:justify-end">
+              <button id="openImportBtn" class="rounded-2xl border border-wine/20 bg-white/50 px-4 py-3 text-sm font-semibold text-wine transition hover:bg-white">Importar JSON</button>
+              <button id="openBookBtn" class="rounded-2xl bg-wine px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-wine/20 transition hover:bg-rose">+ Novo livro</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-8 rounded-[2rem] border border-wine/10 bg-white/30 p-5 shadow-sm">
+          <div class="mb-4 flex items-center justify-between gap-3">
+            <div>
+              <p class="text-xs uppercase tracking-[0.3em] text-wine/70">Resumo da estante</p>
+              <h3 class="font-serif text-3xl font-bold text-ink">Painel da biblioteca</h3>
+            </div>
+            <p id="readPercentText" class="rounded-full bg-wine/10 px-4 py-2 text-sm font-bold text-wine">0% lido</p>
+          </div>
+          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <div class="rounded-2xl bg-white/55 p-4">
+              <p id="unreadBooks" class="font-serif text-3xl font-bold text-wine">0</p>
+              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">não lidos</p>
+            </div>
+            <div class="rounded-2xl bg-white/55 p-4">
+              <p id="averagePrice" class="font-serif text-3xl font-bold text-ink">R$0</p>
+              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">preço médio</p>
+            </div>
+            <div class="rounded-2xl bg-white/55 p-4">
+              <p id="averageRating" class="font-serif text-3xl font-bold text-moss">-</p>
+              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">nota média</p>
+            </div>
+            <div class="rounded-2xl bg-white/55 p-4">
+              <p id="topPublisher" class="truncate font-serif text-2xl font-bold text-ink">-</p>
+              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">editora top</p>
+            </div>
+            <div class="rounded-2xl bg-white/55 p-4">
+              <p id="topAuthor" class="truncate font-serif text-2xl font-bold text-ink">-</p>
+              <p class="text-xs uppercase tracking-[0.18em] text-ink/50">autor top</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-8">
+          <div
+            id="loadingState"
+            class="grid place-items-center rounded-[2rem] border border-dashed border-wine/20 bg-white/30 py-16 text-center"
+          >
+            <p class="font-serif text-3xl text-wine">Abrindo a estante...</p>
+            <p class="mt-2 text-sm text-ink/60">Só um instante.</p>
+          </div>
+
+          <div
+            id="emptyState"
+            class="hidden rounded-[2rem] border border-dashed border-wine/20 bg-white/35 p-12 text-center"
+          >
+            <p
+              class="mx-auto grid h-20 w-20 place-items-center rounded-full bg-wine/10 font-serif text-5xl text-wine"
+            >
+              ✦
+            </p>
+            <h3 class="mt-6 font-serif text-4xl font-bold text-ink">
+              Nenhum livro encontrado
+            </h3>
+            <p class="mx-auto mt-3 max-w-xl text-ink/65">
+              A estante ainda está silenciosa. Faça login para cadastrar o
+              primeiro livro ou importe seu JSON antigo.
+            </p>
+          </div>
+
+          <div id="booksGrid" class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3"></div>
+          <div class="mt-8 flex justify-center">
+            <button id="loadMoreBtn" class="hidden rounded-2xl border border-wine/20 bg-white/50 px-6 py-3 text-sm font-bold text-wine shadow-sm transition hover:bg-white">Carregar mais livros</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Modal Auth -->
+    <div
+      id="authModal"
+      class="modal-backdrop fixed inset-0 z-50 hidden items-center justify-center bg-ink/35 p-4"
+    >
+      <div
+        class="w-full max-w-md rounded-[2rem] border border-wine/15 bg-parchment p-6 shadow-2xl"
+      >
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-wine/70">
+              Acesso reservado
+            </p>
+            <h3 class="stat-value font-serif font-bold text-ink">
+              Entre na biblioteca
+            </h3>
+          </div>
+          <button
+            data-close="authModal"
+            class="rounded-full bg-white/60 px-3 py-1 text-xl text-wine hover:bg-white"
+          >
+            ×
+          </button>
+        </div>
+
+        <form id="authForm" class="mt-6 space-y-4">
+          <div>
+            <label class="text-sm font-semibold text-ink/75">E-mail</label>
+            <input
+              id="authEmail"
+              type="email"
+              required
+              class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+              placeholder="voce@email.com"
+            />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-ink/75">Senha</label>
+            <input
+              id="authPassword"
+              type="password"
+              required
+              minlength="6"
+              class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+              placeholder="••••••••"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <button
+              type="submit"
+              data-mode="login"
+              class="auth-submit rounded-2xl bg-wine px-4 py-3 text-sm font-semibold text-white hover:bg-rose"
+            >
+              Entrar
+            </button>
+            <button
+              type="submit"
+              data-mode="signup"
+              class="auth-submit rounded-2xl border border-wine/20 bg-white/50 px-4 py-3 text-sm font-semibold text-wine hover:bg-white"
+            >
+              Criar conta
+            </button>
+          </div>
+        </form>
+        <p
+          id="authMessage"
+          class="mt-4 hidden rounded-2xl px-4 py-3 text-sm"
+        ></p>
+      </div>
+    </div>
+
+    <!-- Modal Livro -->
+    <div
+      id="bookModal"
+      class="modal-backdrop fixed inset-0 z-50 hidden items-center justify-center bg-ink/35 p-4"
+    >
+      <div
+        class="w-full max-w-2xl rounded-[2rem] border border-wine/15 bg-parchment p-6 shadow-2xl"
+      >
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-wine/70">
+              Catálogo
+            </p>
+            <h3
+              id="bookModalTitle"
+              class="stat-value font-serif font-bold text-ink"
+            >
+              Novo livro
+            </h3>
+          </div>
+          <button
+            data-close="bookModal"
+            class="rounded-full bg-white/60 px-3 py-1 text-xl text-wine hover:bg-white"
+          >
+            ×
+          </button>
+        </div>
+
+        <form id="bookForm" class="mt-6 grid gap-4 md:grid-cols-2">
+          <input id="bookOriginalId" type="hidden" />
+          <div>
+            <label class="text-sm font-semibold text-ink/75">ISBN-13</label>
+            <div class="mt-2 flex gap-2">
+              <input
+                id="bookIsbn"
+                class="w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+                placeholder="9780000000000"
+              />
+              <button
+                id="fetchIsbnBtn"
+                type="button"
+                class="shrink-0 rounded-2xl border border-wine/20 bg-white/50 px-4 py-3 text-xs font-bold text-wine hover:bg-white"
+              >
+                Buscar
+              </button>
+            </div>
+            <p class="mt-1 text-xs text-ink/45">
+              Busca título, autor, editora e capa automaticamente.
+            </p>
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-ink/75">Preço</label>
+            <input
+              id="bookPrice"
+              type="number"
+              step="0.01"
+              min="0"
+              required
+              class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+              placeholder="79.90"
+            />
+          </div>
+          <div class="md:col-span-2">
+            <label class="text-sm font-semibold text-ink/75">Livro</label>
+            <input
+              id="bookName"
+              required
+              class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+              placeholder="O Amante de Lady Chartelley"
+            />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-ink/75">Editora</label>
+            <input
+              id="bookPublisher"
+              class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+              placeholder="Antofagica"
+            />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-ink/75">Autor</label>
+            <input
+              id="bookAuthor"
+              class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+              placeholder="D. H. Lawrence"
+            />
+          </div>
+          <div class="md:col-span-2">
+            <label class="text-sm font-semibold text-ink/75">URL da capa</label>
+            <input
+              id="bookCover"
+              class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4"
+              placeholder="https://..."
+            />
+            <p class="mt-1 text-xs text-ink/45">
+              Pode ser preenchida automaticamente pelo ISBN ou escolhida
+              manualmente.
+            </p>
+          </div>
+          <label
+            class="md:col-span-2 flex cursor-pointer items-center justify-between rounded-2xl border border-wine/10 bg-white/50 px-4 py-3"
+          >
+            <span>
+              <strong class="block text-sm text-ink">Livro já foi lido?</strong>
+              <small class="text-ink/55"
+                >Marque para aparecer como concluído.</small
+              >
+            </span>
+            <input id="bookRead" type="checkbox" class="h-5 w-5 accent-wine" />
+          </label>
+          <div>
+            <label class="text-sm font-semibold text-ink/75">Nota pessoal</label>
+            <select id="bookRating" class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4">
+              <option value="">Sem nota</option>
+              <option value="5">★★★★★ - Favorito</option>
+              <option value="4">★★★★ - Muito bom</option>
+              <option value="3">★★★ - Bom</option>
+              <option value="2">★★ - Regular</option>
+              <option value="1">★ - Não gostei</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-ink/75">Frase favorita</label>
+            <input id="bookFavoriteQuote" class="mt-2 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4" placeholder="Uma frase marcante do livro..." />
+          </div>
+          <div class="md:col-span-2">
+            <label class="text-sm font-semibold text-ink/75">Resenha pessoal</label>
+            <textarea id="bookReview" class="mt-2 h-28 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4" placeholder="O que você achou da leitura?"></textarea>
+          </div>
+          <div class="md:col-span-2 flex flex-wrap justify-end gap-3 pt-2">
+            <button
+              type="button"
+              data-close="bookModal"
+              class="rounded-2xl border border-wine/20 bg-white/50 px-5 py-3 text-sm font-semibold text-wine hover:bg-white"
+            >
+              Cancelar
+            </button>
+            <button
+              class="rounded-2xl bg-wine px-5 py-3 text-sm font-semibold text-white hover:bg-rose"
+            >
+              Salvar livro
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Import -->
+    <div
+      id="importModal"
+      class="modal-backdrop fixed inset-0 z-50 hidden items-center justify-center bg-ink/35 p-4"
+    >
+      <div
+        class="w-full max-w-3xl rounded-[2rem] border border-wine/15 bg-parchment p-6 shadow-2xl"
+      >
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-wine/70">
+              Migração
+            </p>
+            <h3 class="stat-value font-serif font-bold text-ink">
+              Importar JSON antigo
+            </h3>
+          </div>
+          <button
+            data-close="importModal"
+            class="rounded-full bg-white/60 px-3 py-1 text-xl text-wine hover:bg-white"
+          >
+            ×
+          </button>
+        </div>
+        <p class="mt-3 text-sm leading-6 text-ink/65">
+          Cole um array de objetos. O id antigo será ignorado; o Supabase gerará
+          um id novo automaticamente. Campos aceitos: preco, livro, editora,
+          autor, lido, isbn_13, capa_url, nota, resenha_pessoal e frase_favorita.
+        </p>
+        <textarea
+          id="jsonInput"
+          class="mt-4 h-72 w-full rounded-2xl border border-wine/10 bg-white/70 p-4 font-mono text-sm outline-none ring-wine/20 focus:ring-4"
+          placeholder='[{"preco":79.9,"livro":"O Amante de Lady Chartelley","editora":"Antofagica","autor":"D. H. Lawrence","lido":true,"isbn_13":"9780000000000"}]'
+        ></textarea>
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+          <p id="importMessage" class="text-sm text-ink/65"></p>
+          <button
+            id="importBtn"
+            class="rounded-2xl bg-wine px-5 py-3 text-sm font-semibold text-white hover:bg-rose"
+          >
+            Importar / Atualizar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="toast"
+      class="fixed bottom-5 left-1/2 z-[70] hidden -translate-x-1/2 rounded-2xl bg-ink px-5 py-3 text-sm font-semibold text-white shadow-2xl"
+    ></div>
+
+    <script>
+      // Troque pelas suas chaves do Supabase.
+      // É correto usar a anon/public key no frontend; a segurança real fica nas RLS policies do banco.
+      const SUPABASE_URL = "https://yfcjqbconizpfxatapbl.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "sb_publishable_NwHHZTjaqP5qyRkL2vyhDg_NFepgwMA";
+
+      const supabaseClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY,
+      );
+
+      const state = {
+        session: null,
+        books: [],
+        filteredBooks: [],
+        visibleCount: 24,
+        pageSize: 24,
+        viewMode: "gallery",
+      };
+
+      const el = (id) => document.getElementById(id);
+      const money = (value) =>
+        Number(value || 0).toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
+      const escapeHtml = (value = "") =>
+        String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+
+      function toast(message) {
+        const toastEl = el("toast");
+        toastEl.textContent = message;
+        toastEl.classList.remove("hidden");
+        setTimeout(() => toastEl.classList.add("hidden"), 2800);
+      }
+
+      function openModal(id) {
+        el(id).classList.remove("hidden");
+        el(id).classList.add("flex");
+      }
+
+      function closeModal(id) {
+        el(id).classList.add("hidden");
+        el(id).classList.remove("flex");
+      }
+
+      function generateId() {
+        return (
+          Math.random().toString(36).slice(2, 12) +
+          Date.now().toString(36).slice(-6)
+        );
+      }
+
+      function withTimeout(promise, ms = 10000) {
+        return Promise.race([
+          promise,
+          new Promise((_, reject) =>
+            setTimeout(
+              () =>
+                reject(new Error("Tempo esgotado ao conectar com o Supabase.")),
+              ms,
+            ),
+          ),
+        ]);
+      }
+
+      async function init() {
+        // Os cliques precisam ser registrados antes de qualquer chamada externa.
+        // Antes, se o Supabase demorasse/falhasse, o botão Entrar e os modais nunca eram ativados.
+        bindEvents();
+        updateAuthUI();
+
+        if (
+          SUPABASE_URL.includes("COLE_AQUI") ||
+          SUPABASE_ANON_KEY.includes("COLE_AQUI")
+        ) {
+          el("loadingState").classList.add("hidden");
+          el("emptyState").classList.remove("hidden");
+          toast("Configure SUPABASE_URL e SUPABASE_ANON_KEY no index.html");
+          return;
+        }
+
+        try {
+          const { data } = await withTimeout(
+            supabaseClient.auth.getSession(),
+            10000,
+          );
+          state.session = data?.session || null;
+          updateAuthUI();
+        } catch (error) {
+          console.error(error);
+          state.session = null;
+          updateAuthUI();
+          toast(
+            "Não consegui validar a sessão agora. Você ainda pode tentar entrar.",
+          );
+        }
+
+        await loadBooks();
+
+        supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+          state.session = session;
+          updateAuthUI();
+          await loadBooks();
+        });
+      }
+
+      function bindEvents() {
+        el("openAuthBtn").addEventListener("click", () =>
+          openModal("authModal"),
+        );
+        el("logoutBtn").addEventListener("click", logout);
+        el("openBookBtn").addEventListener("click", () => openBookModal());
+        el("openImportBtn").addEventListener("click", () =>
+          openModal("importModal"),
+        );
+        el("searchInput").addEventListener("input", applyFilters);
+        el("readFilter").addEventListener("change", applyFilters);
+        el("sortFilter").addEventListener("change", applyFilters);
+        el("galleryViewBtn").addEventListener("click", () => setViewMode("gallery"));
+        el("listViewBtn").addEventListener("click", () => setViewMode("list"));
+        el("loadMoreBtn").addEventListener("click", loadMoreBooks);
+        el("authForm").addEventListener("submit", authSubmit);
+        el("bookForm").addEventListener("submit", saveBook);
+        el("fetchIsbnBtn").addEventListener("click", fetchBookByIsbn);
+        el("importBtn").addEventListener("click", importJson);
+
+        document.querySelectorAll("[data-close]").forEach((button) => {
+          button.addEventListener("click", () =>
+            closeModal(button.dataset.close),
+          );
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            ["authModal", "bookModal", "importModal"].forEach(closeModal);
+          }
+        });
+      }
+
+      function updateAuthUI() {
+        const logged = Boolean(state.session?.user);
+        el("openAuthBtn").classList.toggle("hidden", logged);
+        el("logoutBtn").classList.toggle("hidden", !logged);
+        el("adminActions").classList.toggle("hidden", !logged);
+
+        const sessionEmail = el("sessionEmail");
+        if (sessionEmail) {
+          sessionEmail.classList.toggle("hidden", !logged);
+          sessionEmail.textContent = logged ? state.session.user.email : "";
+        }
+
+        el("authHint").textContent = logged
+          ? "Você está logado. Agora pode criar, editar, apagar e importar livros."
+          : "Visitantes podem ver a biblioteca. Para criar, editar, apagar ou importar livros, faça login.";
+      }
+
+      async function authSubmit(event) {
+        event.preventDefault();
+        const submitter = event.submitter;
+        const mode = submitter.dataset.mode;
+        const email = el("authEmail").value.trim();
+        const password = el("authPassword").value;
+        const message = el("authMessage");
+        message.className = "mt-4 hidden rounded-2xl px-4 py-3 text-sm";
+
+        submitter.disabled = true;
+        submitter.textContent = mode === "login" ? "Entrando..." : "Criando...";
+
+        const response =
+          mode === "login"
+            ? await supabaseClient.auth.signInWithPassword({ email, password })
+            : await supabaseClient.auth.signUp({ email, password });
+
+        submitter.disabled = false;
+        submitter.textContent = mode === "login" ? "Entrar" : "Criar conta";
+
+        if (response.error) {
+          message.textContent = response.error.message;
+          message.className =
+            "mt-4 rounded-2xl bg-rose/10 px-4 py-3 text-sm text-wine";
+          return;
+        }
+
+        message.textContent =
+          mode === "login"
+            ? "Login realizado com sucesso."
+            : "Conta criada. Se a confirmação por e-mail estiver ativa, confirme antes de entrar.";
+        message.className =
+          "mt-4 rounded-2xl bg-moss/10 px-4 py-3 text-sm text-moss";
+
+        if (mode === "login") {
+          state.session = response.data?.session || (await supabaseClient.auth.getSession()).data?.session || null;
+          updateAuthUI();
+          closeModal("authModal");
+          toast("Bem-vinda à biblioteca.");
+          await loadBooks();
+        }
+      }
+
+      async function logout() {
+        await supabaseClient.auth.signOut();
+        toast("Você saiu da biblioteca.");
+      }
+
+      async function loadBooks() {
+        el("loadingState").classList.remove("hidden");
+        el("emptyState").classList.add("hidden");
+        el("booksGrid").innerHTML = "";
+
+        try {
+          let response = await withTimeout(
+            supabaseClient
+              .from("livros")
+              .select(
+                "id, preco, livro, editora, autor, lido, isbn_13, capa_url, nota, resenha_pessoal, frase_favorita, created_at",
+              )
+              .order("livro", { ascending: true }),
+            12000,
+          );
+
+          // Compatibilidade com a primeira tabela, caso você ainda não tenha rodado a migration
+          // que adiciona isbn_13 e capa_url.
+          if (
+            response.error &&
+            ["isbn_13", "capa_url", "nota", "resenha_pessoal", "frase_favorita", "created_at"].some((column) => String(response.error.message || "").includes(column))
+          ) {
+            response = await withTimeout(
+              supabaseClient
+                .from("livros")
+                .select("id, preco, livro, editora, autor, lido")
+                .order("livro", { ascending: true }),
+              12000,
+            );
+          }
+
+          if (response.error) throw response.error;
+
+          state.books = (response.data || []).map((book) => ({
+            ...book,
+            isbn_13: book.isbn_13 || "",
+            capa_url: book.capa_url || "",
+            nota: book.nota ?? null,
+            resenha_pessoal: book.resenha_pessoal || "",
+            frase_favorita: book.frase_favorita || "",
+            created_at: book.created_at || "",
+          }));
+          applyFilters();
+        } catch (error) {
+          console.error(error);
+          state.books = [];
+          state.filteredBooks = [];
+          renderStats();
+          el("emptyState").classList.remove("hidden");
+          toast(error?.message || "Não foi possível carregar a estante.");
+        } finally {
+          el("loadingState").classList.add("hidden");
+        }
+      }
+
+      function applyFilters(resetVisible = true) {
+        if (resetVisible) state.visibleCount = state.pageSize;
+        const search = el("searchInput").value.trim().toLowerCase();
+        const readFilter = el("readFilter").value;
+        const sort = el("sortFilter").value;
+
+        let books = [...state.books];
+
+        if (search) {
+          books = books.filter((book) =>
+            [book.livro, book.autor, book.editora].some((field) =>
+              String(field || "")
+                .toLowerCase()
+                .includes(search),
+            ),
+          );
+        }
+
+        if (readFilter === "read") books = books.filter((book) => book.lido);
+        if (readFilter === "unread") books = books.filter((book) => !book.lido);
+
+        const sorters = {
+          "livro-asc": (a, b) => String(a.livro).localeCompare(String(b.livro)),
+          "livro-desc": (a, b) =>
+            String(b.livro).localeCompare(String(a.livro)),
+          "preco-desc": (a, b) => Number(b.preco || 0) - Number(a.preco || 0),
+          "preco-asc": (a, b) => Number(a.preco || 0) - Number(b.preco || 0),
+          "autor-asc": (a, b) =>
+            String(a.autor || "").localeCompare(String(b.autor || "")),
+          "editora-asc": (a, b) =>
+            String(a.editora || "").localeCompare(String(b.editora || "")),
+          "lidos-first": (a, b) => Number(Boolean(b.lido)) - Number(Boolean(a.lido)),
+          "nao-lidos-first": (a, b) => Number(Boolean(a.lido)) - Number(Boolean(b.lido)),
+          "nota-desc": (a, b) => Number(b.nota || 0) - Number(a.nota || 0),
+          "recentes": (a, b) => String(b.created_at || "").localeCompare(String(a.created_at || "")),
+        };
+
+        books.sort(sorters[sort] || sorters["livro-asc"]);
+        state.filteredBooks = books;
+        renderStats();
+        renderBooks();
+      }
+
+      function getMostFrequent(items) {
+        const counts = items
+          .filter(Boolean)
+          .reduce((acc, item) => {
+            const key = String(item).trim();
+            if (!key) return acc;
+            acc[key] = (acc[key] || 0) + 1;
+            return acc;
+          }, {});
+
+        const [name] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0] || ["-"];
+        return name;
+      }
+
+      function renderStats() {
+        const total = state.books.length;
+        const read = state.books.filter((book) => book.lido).length;
+        const unread = total - read;
+        const value = state.books.reduce(
+          (sum, book) => sum + Number(book.preco || 0),
+          0,
+        );
+        const ratedBooks = state.books.filter((book) => Number(book.nota || 0) > 0);
+        const ratingAverage = ratedBooks.length
+          ? ratedBooks.reduce((sum, book) => sum + Number(book.nota || 0), 0) / ratedBooks.length
+          : 0;
+        const readPercent = total ? Math.round((read / total) * 100) : 0;
+
+        el("totalBooks").textContent = total;
+        el("readBooks").textContent = read;
+        el("totalValue").textContent = money(value);
+        el("unreadBooks").textContent = unread;
+        el("averagePrice").textContent = total ? money(value / total).replace(",00", "") : "R$0";
+        el("averageRating").textContent = ratedBooks.length ? `${ratingAverage.toFixed(1)} ★` : "-";
+        el("topPublisher").textContent = getMostFrequent(state.books.map((book) => book.editora));
+        el("topAuthor").textContent = getMostFrequent(state.books.map((book) => book.autor));
+        el("readPercentText").textContent = `${readPercent}% lido`;
+      }
+
+      function setViewMode(mode) {
+        state.viewMode = mode;
+        el("galleryViewBtn").classList.toggle("active", mode === "gallery");
+        el("listViewBtn").classList.toggle("active", mode === "list");
+        renderBooks();
+      }
+
+      function loadMoreBooks() {
+        state.visibleCount += state.pageSize;
+        renderBooks();
+      }
+
+      function renderStars(value) {
+        const rating = Number(value || 0);
+        if (!rating) return "";
+        return `<span class="rounded-full bg-wine/10 px-3 py-1 text-xs font-bold text-wine">${"★".repeat(rating)}${"☆".repeat(5 - rating)}</span>`;
+      }
+
+      function renderBooks() {
+        const grid = el("booksGrid");
+        const logged = Boolean(state.session?.user);
+        grid.innerHTML = "";
+        grid.classList.toggle("books-list", state.viewMode === "list");
+
+        el("emptyState").classList.toggle(
+          "hidden",
+          state.filteredBooks.length > 0,
+        );
+
+        const visibleBooks = state.filteredBooks.slice(0, state.visibleCount);
+        el("loadMoreBtn").classList.toggle("hidden", state.filteredBooks.length <= state.visibleCount);
+        el("loadMoreBtn").textContent = `Carregar mais livros (${Math.min(state.visibleCount, state.filteredBooks.length)} de ${state.filteredBooks.length})`;
+
+        visibleBooks.forEach((book, index) => {
+          const mood = book.lido ? "Lido" : "Na pilha de leitura";
+          const quote = book.lido
+            ? "Uma história já guardada na memória."
+            : "Ainda esperando sua noite de chá.";
+          const initials = String(book.livro || "?")
+            .trim()
+            .slice(0, 1)
+            .toUpperCase();
+          const cover = book.capa_url
+            ? `
+    <img
+      src="${escapeHtml(book.capa_url)}"
+      alt="Capa de ${escapeHtml(book.livro)}"
+      class="book-cover h-32 w-22 shrink-0 rounded-tl-xl rounded-tr-sm rounded-bl-sm rounded-br-xl border border-wine/15 bg-parchment object-cover shadow-xl shadow-wine/10"
+      data-initials="${escapeHtml(initials)}"
+    />
+  `
+            : fallbackCoverHtml(initials);
+
+          const card = document.createElement("article");
+          card.className =
+            "book-card group relative overflow-hidden rounded-[1.75rem] border border-wine/10 bg-white/50 p-5 transition duration-300";
+          card.innerHTML = `
+          <div class="absolute right-0 top-0 h-24 w-24 rounded-bl-[4rem] ${index % 2 === 0 ? "bg-wine/10" : "bg-moss/10"}"></div>
+          <div class="book-card-body relative flex gap-4">
+            ${cover}
+            <div class="min-w-0 flex-1">
+              <div class="mb-2 flex flex-wrap items-center gap-2">
+                <span class="rounded-full ${book.lido ? "bg-moss/10 text-moss" : "bg-rose/10 text-wine"} px-3 py-1 text-xs font-bold">${mood}</span>
+                <span class="rounded-full bg-tea/10 px-3 py-1 text-xs font-bold text-tea">${money(book.preco)}</span>
+                ${renderStars(book.nota)}
+              </div>
+              <h3 class="line-clamp-2 font-serif text-3xl font-bold leading-8 text-ink">${escapeHtml(book.livro)}</h3>
+              <p class="mt-2 text-sm font-semibold text-wine/80">${escapeHtml(book.autor || "Autor não informado")}</p>
+              <p class="mt-1 text-sm text-ink/55">${escapeHtml(book.editora || "Editora não informada")}</p>
+              ${book.isbn_13 ? `<p class="mt-2 text-xs text-ink/40">ISBN-13: ${escapeHtml(book.isbn_13)}</p>` : ""}
+            </div>
+          </div>
+          <div class="book-quote relative mt-5 rounded-2xl border border-wine/10 bg-parchment/70 p-4">
+            <p class="font-serif text-lg italic text-ink/70">“${escapeHtml(book.frase_favorita || quote)}”</p>
+            ${book.resenha_pessoal ? `<p class="mt-3 line-clamp-2 text-sm leading-6 text-ink/60">${escapeHtml(book.resenha_pessoal)}</p>` : ""}
+          </div>
+          <div class="relative mt-4 ${logged ? "flex" : "hidden"} justify-end gap-2">
+            <button class="edit-book rounded-xl border border-wine/20 bg-white/50 px-3 py-2 text-xs font-bold text-wine hover:bg-white">Editar</button>
+            <button class="delete-book rounded-xl bg-ink px-3 py-2 text-xs font-bold text-white hover:bg-wine">Apagar</button>
+          </div>
+        `;
+          card.querySelectorAll(".book-cover").forEach((img) => {
+            img.addEventListener("error", () => {
+              img.replaceWith(createFallbackCover(img.dataset.initials || "?"));
+            });
+          });
+          card
+            .querySelector(".edit-book")
+            ?.addEventListener("click", () => openBookModal(book));
+          card
+            .querySelector(".delete-book")
+            ?.addEventListener("click", () => deleteBook(book.id));
+          grid.appendChild(card);
+        });
+      }
+      function createFallbackCover(initials) {
+        const div = document.createElement("div");
+
+        div.className =
+          "grid h-32 w-22 shrink-0 place-items-center rounded-tl-xl rounded-tr-sm rounded-bl-sm rounded-br-xl border border-wine/15 bg-gradient-to-br from-wine/90 to-ink text-parchment shadow-xl shadow-wine/10";
+
+        const span = document.createElement("span");
+        span.className = "font-serif text-5xl font-bold";
+        span.textContent = initials || "?";
+
+        div.appendChild(span);
+
+        return div;
+      }
+      function fallbackCoverHtml(initials) {
+        return `<div class="grid h-32 w-22 shrink-0 place-items-center rounded-tl-xl rounded-tr-sm rounded-bl-sm rounded-br-xl border border-wine/15 bg-gradient-to-br from-wine/90 to-ink text-parchment shadow-xl shadow-wine/10"><span class="font-serif text-5xl font-bold">${escapeHtml(initials)}</span></div>`;
+      }
+
+      function openBookModal(book = null) {
+        el("bookForm").reset();
+        el("bookOriginalId").value = book?.id || "";
+        el("bookModalTitle").textContent = book ? "Editar livro" : "Novo livro";
+        el("bookIsbn").value = book?.isbn_13 || "";
+        el("bookPrice").value = book?.preco ?? "";
+        el("bookName").value = book?.livro || "";
+        el("bookPublisher").value = book?.editora || "";
+        el("bookAuthor").value = book?.autor || "";
+        el("bookCover").value = book?.capa_url || "";
+        el("bookRead").checked = Boolean(book?.lido);
+        el("bookRating").value = book?.nota || "";
+        el("bookFavoriteQuote").value = book?.frase_favorita || "";
+        el("bookReview").value = book?.resenha_pessoal || "";
+        openModal("bookModal");
+      }
+
+      function normalizeIsbn(value = "") {
+        return String(value)
+          .replace(/[^0-9Xx]/g, "")
+          .trim();
+      }
+
+      function collectBookPayload() {
+        return {
+          preco: Number(el("bookPrice").value || 0),
+          livro: el("bookName").value.trim(),
+          editora: el("bookPublisher").value.trim() || null,
+          autor: el("bookAuthor").value.trim() || null,
+          lido: el("bookRead").checked,
+          isbn_13: normalizeIsbn(el("bookIsbn").value) || null,
+          capa_url: el("bookCover").value.trim() || null,
+          nota: el("bookRating").value ? Number(el("bookRating").value) : null,
+          frase_favorita: el("bookFavoriteQuote").value.trim() || null,
+          resenha_pessoal: el("bookReview").value.trim() || null,
+        };
+      }
+
+      async function saveBook(event) {
+        event.preventDefault();
+        if (!state.session?.user)
+          return toast("Faça login para salvar livros.");
+
+        const payload = collectBookPayload();
+        const originalId = el("bookOriginalId").value;
+        const response = originalId
+          ? await supabaseClient
+              .from("livros")
+              .update(payload)
+              .eq("id", originalId)
+          : await supabaseClient.from("livros").insert(payload);
+
+        if (response.error) return toast(response.error.message);
+
+        closeModal("bookModal");
+        toast("Livro salvo com elegância.");
+        await loadBooks();
+      }
+
+      async function deleteBook(id) {
+        if (!state.session?.user)
+          return toast("Faça login para apagar livros.");
+        const confirmed = confirm("Deseja apagar este livro da biblioteca?");
+        if (!confirmed) return;
+
+        const { error } = await supabaseClient
+          .from("livros")
+          .delete()
+          .eq("id", id);
+        if (error) return toast(error.message);
+
+        toast("Livro removido da estante.");
+        await loadBooks();
+      }
+
+      function normalizeImportedBook(item) {
+        return {
+          preco: Number(item.preco || 0),
+          livro: String(item.livro || "").trim(),
+          editora: item.editora ? String(item.editora).trim() : null,
+          autor: item.autor ? String(item.autor).trim() : null,
+          lido: Boolean(item.lido),
+          isbn_13: item.isbn_13 ? normalizeIsbn(item.isbn_13) : null,
+          capa_url: item.capa_url ? String(item.capa_url).trim() : null,
+          nota: item.nota ? Number(item.nota) : null,
+          frase_favorita: item.frase_favorita ? String(item.frase_favorita).trim() : null,
+          resenha_pessoal: item.resenha_pessoal ? String(item.resenha_pessoal).trim() : null,
+        };
+      }
+
+      async function importJson() {
+        if (!state.session?.user)
+          return toast("Faça login para importar livros.");
+        const message = el("importMessage");
+        message.textContent = "";
+
+        try {
+          const parsed = JSON.parse(el("jsonInput").value);
+          const list = Array.isArray(parsed) ? parsed : [parsed];
+          const payload = list
+            .map(normalizeImportedBook)
+            .filter((item) => item.livro);
+
+          if (!payload.length) {
+            message.textContent = "Nenhum livro válido encontrado no JSON.";
+            return;
+          }
+
+          const { error } = await supabaseClient.from("livros").insert(payload);
+          if (error) {
+            message.textContent = error.message;
+            return;
+          }
+
+          message.textContent = `${payload.length} livro(s) importado(s).`;
+          toast("Importação concluída.");
+          await loadBooks();
+        } catch (error) {
+          message.textContent =
+            "JSON inválido. Confira vírgulas, aspas e colchetes.";
+        }
+      }
+
+      async function fetchBookByIsbn() {
+        const isbn = normalizeIsbn(el("bookIsbn").value);
+        if (!isbn) return toast("Informe um ISBN para buscar.");
+
+        const button = el("fetchIsbnBtn");
+        const originalText = button.textContent;
+        button.disabled = true;
+        button.textContent = "Buscando...";
+
+        try {
+          let found = null;
+
+          const googleResponse = await fetch(
+            `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`,
+          );
+          if (googleResponse.ok) {
+            const googleData = await googleResponse.json();
+            const info = googleData?.items?.[0]?.volumeInfo;
+            if (info) {
+              found = {
+                livro: info.title || "",
+                autor: Array.isArray(info.authors)
+                  ? info.authors.join(", ")
+                  : "",
+                editora: info.publisher || "",
+                capa_url: (
+                  info.imageLinks?.thumbnail ||
+                  info.imageLinks?.smallThumbnail ||
+                  ""
+                ).replace("http://", "https://"),
+              };
+            }
+          }
+
+          if (!found) {
+            const openLibraryResponse = await fetch(
+              `https://openlibrary.org/isbn/${isbn}.json`,
+            );
+            if (openLibraryResponse.ok) {
+              const data = await openLibraryResponse.json();
+              found = {
+                livro: data.title || "",
+                autor: "",
+                editora: Array.isArray(data.publishers)
+                  ? data.publishers.join(", ")
+                  : "",
+                capa_url: `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg?default=false`,
+              };
+            }
+          }
+
+          if (!found || !found.livro) {
+            toast("Não encontrei esse ISBN. Você pode preencher manualmente.");
+            return;
+          }
+
+          if (found.livro) el("bookName").value = found.livro;
+          if (found.autor) el("bookAuthor").value = found.autor;
+          if (found.editora) el("bookPublisher").value = found.editora;
+          if (found.capa_url) el("bookCover").value = found.capa_url;
+          toast("Dados encontrados pelo ISBN. Confira antes de salvar.");
+        } catch (error) {
+          toast("Falha ao buscar pelo ISBN. Preencha manualmente.");
+        } finally {
+          button.disabled = false;
+          button.textContent = originalText;
+        }
+      }
+
+      if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("sw.js").catch(() => {});
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", init);
+    </script>
+  </body>
+</html>
