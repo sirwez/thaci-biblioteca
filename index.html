@@ -421,32 +421,35 @@
     <!-- Modal Livro -->
     <div
       id="bookModal"
-      class="modal-backdrop fixed inset-0 z-50 hidden items-center justify-center bg-ink/35 p-4"
+      class="modal-backdrop fixed inset-0 z-50 hidden items-start justify-center overflow-y-auto bg-ink/35 p-4 sm:p-6"
     >
       <div
-        class="w-full max-w-2xl rounded-[2rem] border border-wine/15 bg-parchment p-6 shadow-2xl"
+        class="my-6 w-full max-w-2xl overflow-hidden rounded-[2rem] border border-wine/15 bg-parchment shadow-2xl"
       >
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <p class="text-xs uppercase tracking-[0.3em] text-wine/70">
-              Catálogo
-            </p>
-            <h3
-              id="bookModalTitle"
-              class="stat-value font-serif font-bold text-ink"
+        <div class="sticky top-0 z-10 rounded-t-[2rem] border-b border-wine/10 bg-parchment p-6">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="text-xs uppercase tracking-[0.3em] text-wine/70">
+                Catálogo
+              </p>
+              <h3
+                id="bookModalTitle"
+                class="stat-value font-serif font-bold text-ink"
+              >
+                Novo livro
+              </h3>
+            </div>
+            <button
+              data-close="bookModal"
+              class="rounded-full bg-white/60 px-3 py-1 text-xl text-wine hover:bg-white"
             >
-              Novo livro
-            </h3>
+              ×
+            </button>
           </div>
-          <button
-            data-close="bookModal"
-            class="rounded-full bg-white/60 px-3 py-1 text-xl text-wine hover:bg-white"
-          >
-            ×
-          </button>
         </div>
 
-        <form id="bookForm" class="mt-6 grid gap-4 md:grid-cols-2">
+        <div class="max-h-[calc(100vh-11rem)] overflow-y-auto p-6">
+        <form id="bookForm" class="grid gap-4 md:grid-cols-2">
           <input id="bookOriginalId" type="hidden" />
           <div>
             <label class="text-sm font-semibold text-ink/75">ISBN-13</label>
@@ -547,7 +550,7 @@
             <label class="text-sm font-semibold text-ink/75">Resenha pessoal</label>
             <textarea id="bookReview" class="mt-2 h-28 w-full rounded-2xl border border-wine/10 bg-white/70 px-4 py-3 outline-none ring-wine/20 focus:ring-4" placeholder="O que você achou da leitura?"></textarea>
           </div>
-          <div class="md:col-span-2 flex flex-wrap justify-end gap-3 pt-2">
+          <div class="sticky bottom-0 -mx-6 mt-2 flex flex-wrap justify-end gap-3 border-t border-wine/10 bg-parchment/95 px-6 py-4 backdrop-blur md:col-span-2">
             <button
               type="button"
               data-close="bookModal"
@@ -562,6 +565,7 @@
             </button>
           </div>
         </form>
+        </div>
       </div>
     </div>
 
@@ -659,13 +663,29 @@
       }
 
       function openModal(id) {
-        el(id).classList.remove("hidden");
-        el(id).classList.add("flex");
+        const modal = el(id);
+        if (!modal) return;
+
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        document.body.classList.add("overflow-hidden");
       }
 
       function closeModal(id) {
-        el(id).classList.add("hidden");
-        el(id).classList.remove("flex");
+        const modal = el(id);
+        if (!modal) return;
+
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+
+        const hasOpenModal = ["authModal", "bookModal", "importModal"].some((modalId) => {
+          const item = el(modalId);
+          return item && !item.classList.contains("hidden");
+        });
+
+        if (!hasOpenModal) {
+          document.body.classList.remove("overflow-hidden");
+        }
       }
 
       function generateId() {
